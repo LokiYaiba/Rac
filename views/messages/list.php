@@ -47,7 +47,7 @@ $time      = $row['created_at'] ?? '';
         <!-- RIGHT: COMMENT BUTTON -->
         <div class="right-actions">
             <button type="button" class="comment-toggle" data-id="<?= $row['id'] ?>">
-                💬 Click to write comment (<?= count($row['comments']) ?>)
+                💬 View comments (<?= count($row['comments']) ?>)
             </button>
         </div>
 
