@@ -6,14 +6,17 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
 
     // 1) messages
     $stmt = $conn->prepare("
-        SELECT * FROM messages 
-        ORDER BY created_at DESC 
-        LIMIT ? OFFSET ?
+    SELECT * FROM messages 
+    ORDER BY created_at DESC 
+    LIMIT :limit OFFSET :offset
     ");
-    $stmt->bind_param("ii", $limit, $offset);
+    
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+    
     $stmt->execute();
-
-    $messages = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    
+    $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (!$messages) return [];
 
