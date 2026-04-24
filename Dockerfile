@@ -1,17 +1,20 @@
-# Use PHP with Apache
 FROM php:8.2-apache
 
-# Enable Apache mod_rewrite
+# Disable conflicting MPMs, keep prefork
+RUN a2dismod mpm_event || true
+RUN a2dismod mpm_worker || true
+RUN a2enmod mpm_prefork
+
+# Enable rewrite (optional but useful)
 RUN a2enmod rewrite
 
-# Install MySQL extension
+# Install MySQL extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Copy project files into container
+# Copy app
 COPY . /var/www/html/
 
-# Set proper permissions
+# Fix permissions
 RUN chown -R www-data:www-data /var/www/html
 
-# Expose port
 EXPOSE 80
