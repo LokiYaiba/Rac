@@ -1,6 +1,13 @@
 <?php
-echo "HOST: " . getenv('MYSQLHOST') . "<br>";
-echo "USER: " . getenv('MYSQLUSER') . "<br>";
-echo "DB: " . getenv('MYSQLDATABASE') . "<br>";
-exit;
+$host = getenv('MYSQLHOST');
+$user = getenv('MYSQLUSER');
+$pass = getenv('MYSQLPASSWORD');
+$db   = getenv('MYSQLDATABASE');
+$port = getenv('MYSQLPORT') ?: 3306;
+
+$conn = new mysqli($host, $user, $pass, $db, $port);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 ?>
