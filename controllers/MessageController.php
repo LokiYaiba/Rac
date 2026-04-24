@@ -6,16 +6,15 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
 
     // 1) messages
     $stmt = $conn->prepare("
-    SELECT * FROM messages 
-    ORDER BY created_at DESC 
-    LIMIT :limit OFFSET :offset
+        SELECT * FROM messages 
+        ORDER BY created_at DESC 
+        LIMIT :limit OFFSET :offset
     ");
-    
+
     $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
     $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
-    
     $stmt->execute();
-    
+
     $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (!$messages) return [];
@@ -26,7 +25,7 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
 
     // 2) reactions count
     $counts = [];
-    $res = $conn->query("
+    $stmt = $conn->query("
         SELECT message_id,
                SUM(reaction='like') AS likes,
                SUM(reaction='dislike') AS dislikes
@@ -34,7 +33,9 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
         WHERE message_id IN ($in)
         GROUP BY message_id
     ");
-    while ($r = $res->fetch_assoc()) {
+
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $r) {
         $counts[$r['message_id']] = [
             'likes' => (int)$r['likes'],
             'dislikes' => (int)$r['dislikes']
@@ -44,13 +45,15 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
     // 3) my reaction
     $my = [];
     if ($userId) {
-        $res = $conn->query("
+        $stmt = $conn->query("
             SELECT message_id, reaction
             FROM reactions
             WHERE user_id = " . (int)$userId . "
             AND message_id IN ($in)
         ");
-        while ($r = $res->fetch_assoc()) {
+
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($rows as $r) {
             $my[$r['message_id']] = $r['reaction'];
         }
     }
@@ -58,17 +61,15 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
     // 4) comments
     $commentsMap = [];
 
-    $stmt = $conn->prepare("
+    $stmt = $conn->query("
         SELECT message_id, username, comment 
         FROM comments 
         WHERE message_id IN ($in)
         ORDER BY id ASC
     ");
-    $stmt->execute();
 
-    $cres = $stmt->get_result();
-
-    while ($c = $cres->fetch_assoc()) {
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($rows as $c) {
         $mid = $c['message_id'];
 
         $commentsMap[$mid][] = [
@@ -90,18 +91,19 @@ function getMessagesWithMeta($limit, $offset, $userId = null) {
     return $messages;
 }
 
-/* OTHER FUNCTIONS BELOW ARE OK */
+/* OTHER FUNCTIONS */
 function countMessages() {
     global $conn;
-    $res = $conn->query("SELECT COUNT(*) AS total FROM messages");
-    return (int)$res->fetch_assoc()['total'];
+
+    $stmt = $conn->query("SELECT COUNT(*) AS total FROM messages");
+    return (int)$stmt->fetch(PDO::FETCH_ASSOC)['total'];
 }
 
 function getPagination($limit) {
     global $conn;
 
-    $result = $conn->query("SELECT COUNT(*) as total FROM messages");
-    $totalRows = $result->fetch(PDO::FETCH_ASSOC)['total'];
+    $stmt = $conn->query("SELECT COUNT(*) as total FROM messages");
+    $totalRows = $stmt->fetch(PDO::FETCH_ASSOC)['total'];
 
     return [
         'totalRows' => $totalRows,
