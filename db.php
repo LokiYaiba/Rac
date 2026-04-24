@@ -1,8 +1,8 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db   = "message_app";
+$host = $_ENV['DB_HOST'] ?? 'localhost';
+$user = $_ENV['DB_USER'] ?? 'root';
+$pass = $_ENV['DB_PASS'] ?? '';
+$db   = $_ENV['DB_NAME'] ?? 'message_app';
 
 $conn = new mysqli($host, $user, $pass, $db);
 
