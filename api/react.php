@@ -1,21 +1,6 @@
 <?php
 session_start();
-require '../controllers/ReactionController.php';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $user_id = $_SESSION['user_id'] ?? null;
-    $message_id = $_POST['message_id'] ?? 0;
-    $reaction = $_POST['reaction'] ?? '';
-
-    if (!$user_id || !$message_id) {
-        exit('ERROR');
-    }
-
-    $result = handleReaction($user_id, $message_id, $reaction);
-
-    echo json_encode($result);
-}
+require '../db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -27,34 +12,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit('ERROR');
     }
 
-    // check existing reaction
+    // ✅ check existing reaction
     $stmt = $conn->prepare("SELECT reaction FROM reactions WHERE user_id = ? AND message_id = ?");
-    $stmt->bind_param("ii", $user_id, $message_id);
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
+    $stmt->execute([$user_id, $message_id]);
+    $existing = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result) {
+    if ($existing) {
         // update
-        $stmt = $conn->prepare("UPDATE reactions SET reaction=? WHERE user_id=? AND message_id=?");
-        $stmt->bind_param("sii", $reaction, $user_id, $message_id);
-        $stmt->execute();
+        $stmt = $conn->prepare("UPDATE reactions SET reaction = ? WHERE user_id = ? AND message_id = ?");
+        $stmt->execute([$reaction, $user_id, $message_id]);
     } else {
         // insert
         $stmt = $conn->prepare("INSERT INTO reactions (user_id, message_id, reaction) VALUES (?, ?, ?)");
-        $stmt->bind_param("iis", $user_id, $message_id, $reaction);
-        $stmt->execute();
+        $stmt->execute([$user_id, $message_id, $reaction]);
     }
 
-    // return new counts
-    $likes = $conn->query("SELECT COUNT(*) as c FROM reactions WHERE message_id=$message_id AND reaction='like'")
-                  ->fetch_assoc()['c'];
+    // ✅ count likes
+    $stmt = $conn->prepare("SELECT COUNT(*) as c FROM reactions WHERE message_id = ? AND reaction = 'like'");
+    $stmt->execute([$message_id]);
+    $likes = $stmt->fetch(PDO::FETCH_ASSOC)['c'];
 
-    $dislikes = $conn->query("SELECT COUNT(*) as c FROM reactions WHERE message_id=$message_id AND reaction='dislike'")
-                     ->fetch_assoc()['c'];
+    // ✅ count dislikes
+    $stmt = $conn->prepare("SELECT COUNT(*) as c FROM reactions WHERE message_id = ? AND reaction = 'dislike'");
+    $stmt->execute([$message_id]);
+    $dislikes = $stmt->fetch(PDO::FETCH_ASSOC)['c'];
 
     echo json_encode([
-        'likes' => $likes,
-        'dislikes' => $dislikes,
+        'likes' => (int)$likes,
+        'dislikes' => (int)$dislikes,
         'myReaction' => $reaction
     ]);
 }
+?>
