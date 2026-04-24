@@ -6,8 +6,7 @@ $username = $_POST['username'] ?: "Anonymous";
 $content = $_POST['content'];
 
 $stmt = $conn->prepare("INSERT INTO messages (recipient, username, content) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $recipient, $username, $content);
-$stmt->execute();
+$stmt->execute([$recipient, $username, $content]);
 
 header("Location: ../index.php"); // go back to main page
 exit();
