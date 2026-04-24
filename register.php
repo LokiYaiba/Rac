@@ -13,22 +13,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Passwords do not match.";
     } else {
 
-        // ✅ CHECK IF USERNAME EXISTS
-        $check = $conn->prepare("SELECT id FROM users WHERE username=?");
-        $check->bind_param("s", $username);
-        $check->execute();
-        $result = $check->get_result();
+        // ✅ CHECK IF USERNAME EXISTS (PDO)
+        $check = $conn->prepare("SELECT id FROM users WHERE username = ?");
+        $check->execute([$username]);
+        $existingUser = $check->fetch(PDO::FETCH_ASSOC);
 
-        if ($result->num_rows > 0) {
+        if ($existingUser) {
             $error = "Username already taken.";
         } else {
             $hashed = password_hash($password, PASSWORD_DEFAULT);
 
+            // ✅ INSERT USER (PDO)
             $stmt = $conn->prepare("INSERT INTO users (username, password) VALUES (?, ?)");
-            $stmt->bind_param("ss", $username, $hashed);
+            $success = $stmt->execute([$username, $hashed]);
 
-            if ($stmt->execute()) {
-                $_SESSION['user_id'] = $conn->insert_id;
+            if ($success) {
+                $_SESSION['user_id'] = $conn->lastInsertId(); // ✅ PDO version
                 $_SESSION['username'] = $username;
 
                 header("Location: index.php");
