@@ -1,0 +1,516 @@
+/* Reset */
+* {
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    margin: 0;
+    padding: 10px;
+}
+
+/* Container */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Title */
+h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+/* Inputs */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+
+
+/* Messages */
+
+
+/* Username */
+.username {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Time */
+.time {
+    font-size: 11px;
+    color: gray;
+    margin-top: 5px;
+}
+
+/* 📱 Mobile tweaks */
+@media (max-width: 480px) {
+    .container {
+        padding: 12px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    h2 {
+        font-size: 18px;
+    }
+
+    input, textarea {
+        font-size: 16px;
+    }
+
+    button {
+        font-size: 16px;
+    }
+}
+
+/* 💻 Larger screens */
+@media (min-width: 768px) {
+    .container {
+        max-width: 600px;
+        padding: 20px;
+    }
+}
+button {
+    margin-top: 8px;
+}
+
+.message form input {
+    margin-top: 5px;
+}
+/* =========================
+   MESSAGE CARD
+   ========================= */
+.message {
+    background: white;
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    word-wrap: break-word;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.to {
+    font-weight: bold;
+}
+
+.time {
+    font-size: 12px;
+    color: #888;
+}
+
+/* =========================
+   CONTENT
+   ========================= */
+.post-content {
+    margin: 10px 0;
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+.post-footer {
+    font-size: 13px;
+    color: #555;
+}
+
+/* =========================
+   ACTIONS (LIKE / COMMENT)
+   ========================= */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.left-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.right-actions {
+    margin-left: auto;
+}
+
+/* buttons */
+.post-actions button {
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f0f2f5;
+    border: none;
+    cursor: pointer;
+}
+
+
+.react-btn {
+    padding: 6px 10px;
+    border: none;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* user liked */
+.active-like {
+    background: #1877f2;
+    color: white;
+}
+
+/* user disliked */
+.active-dislike {
+    background: #e74c3c;
+    color: white;
+}
+/* Auth pages */
+.auth-box {
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.auth-box h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.auth-box input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.auth-box button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 15px;
+    background: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.auth-box button:hover {
+    background: #145dbf;
+}
+
+.error {
+    color: red;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.switch {
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* Menu container */
+#menuView {
+    display: none;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Menu items */
+#menuView a {
+    display: block;
+    margin: 10px 0;
+    padding: 12px;
+    background: #1e293b;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+/* Logout button */
+.logout {
+    background: #e74c3c;
+}
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.comment-input:disabled {
+    background: #eee;
+    cursor: not-allowed;
+}
+#menuView {
+    display: none;
+    width: 100%;
+}
+
+/* when active (shown) */
+#menuView.active {
+    display: block;
+}
+.back-btn {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px;
+    background: #ccc;
+    color: black;
+    border-radius: 6px;
+    text-decoration: none;
+}
+.header {
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 100;
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+}
+.header h2 {
+    margin: 0;
+    font-size: 20px;
+    text-align: center;
+}
+.react-btn:disabled,
+.comment-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+
+.message {
+    margin-bottom: 15px;
+}
+/* =========================
+   GLOBAL BUTTON (FORM ONLY)
+   ========================= */
+   button {
+    padding: 12px;
+    background: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #145dbf;
+}
+
+/* ONLY form buttons are full width */
+form button {
+    width: 100%;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* LEFT SIDE */
+.left-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* RIGHT SIDE */
+.right-actions {
+    margin-left: auto; /* 🔥 pushes comment to right */
+    display: flex;
+}
+
+/* BUTTON STYLE */
+.post-actions button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #f0f2f5;
+    color: #333;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+/* hover */
+.post-actions button:hover {
+    background: #e4e6eb;
+}
+/* HEADER */
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.to {
+    font-weight: bold;
+}
+
+.time {
+    font-size: 12px;
+    color: #888;
+}
+
+/* FOOTER */
+.post-footer {
+    font-size: 13px;
+    color: #555;
+    margin: 6px 0;
+}
+
+/* CONTENT */
+.post-content {
+    margin: 10px 0;
+}
+
+/* MAIN NAVBAR HEADER */
+.header {
+    position: sticky;   /* 🔥 makes it stay on top */
+    top: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+
+    background: white;
+    z-index: 1000;
+
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+
+    text-align: center;
+}
+
+/* title */
+.header h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+
+/* default visible */
+/* message must allow expansion */
+.message {
+    display: block;
+    overflow: visible;
+}
+
+/* actions must not trap layout */
+.post-actions {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; /* 🔥 VERY IMPORTANT */
+}
+
+/* =========================
+   COMMENTS (CLEAN)
+   ========================= */
+
+/* single comment */
+.comment {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+/* username + avatar container */
+.comment-user {
+    font-weight: bold;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+}
+
+/* avatar circle */
+.comment-user::before {
+    content: attr(data-initial);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+
+    background: #1877f2;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+
+    margin-right: 6px;
+}
+
+/* comment bubble */
+.comment-text {
+    background: #f0f2f5;
+    padding: 8px 12px;
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+/* input */
+.comment-input {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background: #f0f2f5;
+    margin-top: 8px;
+}
+.compose-box {
+    margin-bottom: 15px;
+    padding: 10px;
+    background: #f7f7f7;
+    border-radius: 8px;
+}
+
+/* container */
+.comment-box {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+.comment-box {
+    display: none;
+}
+
+.comment-box.show {
+    display: block;
+}
+
+
+
+
