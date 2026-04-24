@@ -11,10 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($message_id && $comment) {
 
         $stmt = $conn->prepare("INSERT INTO comments (message_id, username, comment) VALUES (?, ?, ?)");
-        $stmt->bind_param("iss", $message_id, $username, $comment);
-        $stmt->execute();
+        $stmt->execute([$message_id, $username, $comment]);
 
-        echo "OK"; // ✅ VERY IMPORTANT for AJAX
+        echo "OK"; // ✅ for AJAX
     } else {
         echo "ERROR";
     }
