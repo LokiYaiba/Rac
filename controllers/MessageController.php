@@ -101,7 +101,7 @@ function getPagination($limit) {
     global $conn;
 
     $result = $conn->query("SELECT COUNT(*) as total FROM messages");
-    $totalRows = $result->fetch_assoc()['total'];
+    $totalRows = $result->fetch(PDO::FETCH_ASSOC)['total'];
 
     return [
         'totalRows' => $totalRows,
